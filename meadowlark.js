@@ -26,8 +26,12 @@ app.use(handlers.notFound);
 
 app.use(handlers.serverError);
 
-app.listen(port, () =>
-  console.log(
-    `The server is listening in the port ${port} to exit click Ctrl C`
-  )
-);
+if (require.main === module) {
+  app.listen(port, () =>
+    console.log(
+      `The server is listening in the port ${port} to exit click Ctrl C`
+    )
+  );
+} else {
+  module.exports = app;
+}
