@@ -3,6 +3,7 @@ const handlers = require("./lib/handlers");
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
+const handlers = require("./lib/handlers");
 
 const port = process.env.PORT || 3000;
 
@@ -38,8 +39,12 @@ app.use(handlers.serverError);
 
 
 
-app.listen(port, () =>
-  console.log(
-    `The server is listening in the port ${port} to exit click Ctrl C`
-  )
-);
+if (require.main === module) {
+  app.listen(port, () =>
+    console.log(
+      `The server is listening in the port ${port} to exit click Ctrl C`
+    )
+  );
+} else {
+  module.exports = app;
+}
