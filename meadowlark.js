@@ -1,3 +1,5 @@
+const handlers = require("./lib/handlers");
+
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
@@ -13,34 +15,28 @@ app.engine(
   })
 );
 
-const fortunes = [
-  "congure your fear or they will conqure you!",
-  "Do not fear what you do not know",
-  "River need springs",
-  "You will have a pleasant suprise!",
-  "When ever possible keep it simple",
-];
+
 
 app.use(express.static(`${__dirname}/public/`));
 
 app.set("view engine", "handlebars");
 
-app.get("/", (req, res) => res.render("home"));
 
-app.get("/about", (req, res) => {
-  const randomFortunes = fortunes[Math.floor(Math.random() * fortunes.length)];
-  res.render("about", { fortune: randomFortunes });
-});
+app.get("/", handlers.home);
 
-app.use((req, res) => {
-  res.status(404);
-  res.render("404");
-});
+app.get("/about", handlers.about);
 
-app.use((req, res) => {
-  res.status(500);
-  res.render("500");
-});
+// exports.getFortune = (idx) => {
+//   idx = Math.floor(Math.random()* fortune.length)
+
+//   }
+// custom 404 page
+app.use(handlers.notFound);
+
+// custom 500 page
+app.use(handlers.serverError);
+
+
 
 app.listen(port, () =>
   console.log(
