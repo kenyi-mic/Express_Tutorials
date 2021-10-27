@@ -3,7 +3,7 @@ const handlers = require("./lib/handlers");
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
-const handlers = require("./lib/handlers");
+
 
 const port = process.env.PORT || 3000;
 
@@ -13,6 +13,13 @@ app.engine(
     extname: ".handlebars",
     defaultLayout: false,
     layoutsDir: "views/layouts/",
+    helpers:{
+      secttion: function(name, options){
+        if(!this._sections)this._sections ={}
+        this._sections[name] = options.fn(this)
+        return null
+      },
+    },
   })
 );
 
@@ -26,6 +33,9 @@ app.set("view engine", "handlebars");
 app.get("/", handlers.home);
 
 app.get("/about", handlers.about);
+
+app.get("/contact", handlers.contact);
+
 
 // exports.getFortune = (idx) => {
 //   idx = Math.floor(Math.random()* fortune.length)
