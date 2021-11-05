@@ -3,6 +3,7 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
 const weatherMiddlware = require("./lib/middleware/weather");
+const multiparty = require("multiparty");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -51,6 +52,15 @@ app.get("/newsletter-signup/thank-you", handlers.newsletterSignupThankYou);
 
 app.get("/newsletter", handlers.newsletter);
 app.post("api/newsletter-signup", handlers.api.newsletterSignup);
+
+//voction photo contest
+app.post("/contest/vocation-photo/:year/:month", (req, res) => {
+  const form = new multiparty.Form();
+  form.parse(req, (fields, files) => {
+    if (err) return res.status(500).send({ error: err.message });
+    handlers.vocationPhotoContestProcess(req, res, fields, files);
+  });
+});
 
 if (require.main === module) {
   app.listen(port, () =>
