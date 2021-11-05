@@ -39,19 +39,14 @@ app.get("/contact", handlers.contact);
 
 app.get("/faq", handlers.faq);
 
-// custom 404 page
-app.use(handlers.notFound);
-
-// custom 500 page
-app.use(handlers.serverError);
-
 // browser based form handler
+
 app.get("/newsletter-signup", handlers.newsletterSignup);
 app.get("/newsletter-signup/process", handlers.newsletterSignupProcess);
 app.get("/newsletter-signup/thank-you", handlers.newsletterSignupThankYou);
 
 app.get("/newsletter", handlers.newsletter);
-app.post("api/newsletter-signup", handlers.api.newsletterSignup);
+app.post("/api/newsletter-signup", handlers.api.newsletterSignup);
 
 //voction photo contest
 app.post("/contest/vocation-photo/:year/:month", (req, res) => {
@@ -61,6 +56,12 @@ app.post("/contest/vocation-photo/:year/:month", (req, res) => {
     handlers.vocationPhotoContestProcess(req, res, fields, files);
   });
 });
+
+// custom 404 page
+app.use(handlers.notFound);
+
+// custom 500 page
+app.use(handlers.serverError);
 
 if (require.main === module) {
   app.listen(port, () =>
